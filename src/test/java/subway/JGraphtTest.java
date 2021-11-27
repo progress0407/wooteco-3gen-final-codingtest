@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import org.jgrapht.Graph;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.WeightedMultigraph;
@@ -34,11 +35,21 @@ public class JGraphtTest {
 		graph.addVertex("a3");
 		graph.setEdgeWeight(graph.addEdge("a1", "a2"), 3);
 		graph.setEdgeWeight(graph.addEdge("a2", "a3"), 3);
-		graph.setEdgeWeight(graph.addEdge("a3", "a1"), 10);
+		graph.setEdgeWeight(graph.addEdge("a3", "a1"), 9);
 
 		DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
 		List shortestPath = dijkstraShortestPath.getPath("a1", "a3").getVertexList();
 		System.out.println("shortestPath = " + shortestPath);
+
+		List edgeList = dijkstraShortestPath.getPath("a1", "a3").getEdgeList();
+		System.out.println("edgeList = " + edgeList);
+
+		double weight = dijkstraShortestPath.getPath("a1", "a3").getWeight();
+		System.out.println("weight = " + weight);
+
+		Graph graph1 = dijkstraShortestPath.getPath("a1", "a3").getGraph();
+		System.out.println("graph1 = " + graph1);
+
 
 		assertThat(shortestPath.size()).isEqualTo(3);
 	}
