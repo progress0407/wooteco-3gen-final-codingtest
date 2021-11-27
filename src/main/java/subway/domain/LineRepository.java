@@ -8,9 +8,6 @@ import java.util.Objects;
 public class LineRepository {
 	private static final List<Line> lines = new ArrayList<>();
 
-	/*
-	교대역, 강남역, 역삼역, 남부터미널역, 양재역, 양재시민의숲역, 매봉역
-	 */
 	static {
 		addLine(new Line("교대역"));
 		addLine(new Line("강남역"));

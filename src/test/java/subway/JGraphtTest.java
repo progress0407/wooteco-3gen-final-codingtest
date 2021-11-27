@@ -1,5 +1,7 @@
 package subway;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.util.List;
 
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
