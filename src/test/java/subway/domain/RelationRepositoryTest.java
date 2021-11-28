@@ -17,13 +17,14 @@ class RelationRepositoryTest {
 		assertThat(timeWeight).isEqualTo(11);
 	}
 
-/*
 	@Test
 	void 최단시간_조회() {
 		String source = "교대역";
 		String destination = "양재역";
-		int shortestTime = RelationRepository.getShortestTime(source, destination);
-		assertThat(shortestTime).isEqualTo(11);
+		Relation relation = RelationRepository.getShortestTime(source, destination);
+		int distanceWeight = relation.getDistanceWeight();
+		int timeWeight = relation.getTimeWeight();
+		assertThat(distanceWeight).isEqualTo(9);
+		assertThat(timeWeight).isEqualTo(7);
 	}
-*/
 }

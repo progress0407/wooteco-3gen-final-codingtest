@@ -77,15 +77,28 @@ public class RelationRepository {
 	public static Relation getShortestDistance(String source, String destination) {
 
 		GraphPath graphPath = dijkstraShortestDistance.getPath(source, destination);
-		double distanceShortestWeight = graphPath.getWeight();
+		double distanceShortest = graphPath.getWeight();
 		List<DefaultWeightedEdge> edgeList = graphPath.getEdgeList();
 
-		double timeTotalWeight = 0;
+		double timeTotal = 0;
 		for (DefaultWeightedEdge edge : edgeList) {
 			int timeWeight = getTimeWeightByEdge(edge);
-			timeTotalWeight += timeWeight;
+			timeTotal += timeWeight;
 		}
-		return new Relation(distanceShortestWeight, timeTotalWeight);
+		return new Relation(distanceShortest, timeTotal);
+	}
+
+	public static Relation getShortestTime(String source, String destination) {
+		GraphPath graphPath = dijkstraShortestTime.getPath(source, destination);
+		double shortestTime = graphPath.getWeight();
+		List<DefaultWeightedEdge> edgeList = graphPath.getEdgeList();
+
+		double distanceTotal = 0;
+		for (DefaultWeightedEdge edge : edgeList) {
+			int distanceWeight = getDistanceWeightByEdge(edge);
+			distanceTotal += distanceWeight;
+		}
+		return new Relation(distanceTotal, shortestTime);
 	}
 
 	private static int getTimeWeightByEdge(DefaultWeightedEdge edge) {
@@ -95,7 +108,18 @@ public class RelationRepository {
 				e.getStationName().equals(relation.getStationName())
 					&& e.getOpponentStationName().equals(relation.getOpponentStationName()))
 			.map(Relation::getTimeWeight)
-			.findFirst()
+			.findAny()
+			.get();
+	}
+
+	private static int getDistanceWeightByEdge(DefaultWeightedEdge edge) {
+		Relation relation = getStationNamesByEdge(edge);
+		return relations.stream()
+			.filter(e ->
+				e.getStationName().equals(e.getStationName())
+					&& e.getOpponentStationName().equals(relation.getOpponentStationName()))
+			.map(Relation::getDistanceWeight)
+			.findAny()
 			.get();
 	}
 
@@ -104,11 +128,6 @@ public class RelationRepository {
 		String stationName = split[0];
 		String opponentStationName = split[1];
 		return new Relation(stationName, opponentStationName);
-	}
-
-	public static Relation getShortestTime(String source, String destination) {
-		double shortestTime = dijkstraShortestTime.getPath(source, destination).getWeight();
-		return new Relation(100, shortestTime);
 	}
 
 	private static void deleteAll() {
