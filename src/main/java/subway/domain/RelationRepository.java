@@ -32,8 +32,6 @@ public class RelationRepository {
 		addVertex();
 		addDistanceEdgeWeight();
 		addTimeEdgeWeight();
-		System.out.println("distanceRelation = " + distanceRelation);
-		System.out.println("timeRelation = " + timeRelation);
 	}
 
 	private static void addRelations() {
@@ -87,7 +85,6 @@ public class RelationRepository {
 			int timeWeight = getTimeWeightByEdge(edge);
 			timeTotalWeight += timeWeight;
 		}
-		System.out.println("timeTotalWeight = " + timeTotalWeight);
 		return new Relation(distanceShortestWeight, timeTotalWeight);
 	}
 
