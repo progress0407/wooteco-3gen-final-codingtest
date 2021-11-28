@@ -13,10 +13,10 @@ public class RelationRepository {
 
 	private static final List<Relation> relations = new ArrayList<>();
 
-	private static WeightedMultigraph<String, DefaultWeightedEdge> distanceRelation =
+	private static final WeightedMultigraph<String, DefaultWeightedEdge> distanceRelation =
 		new WeightedMultigraph<>(DefaultWeightedEdge.class);
 
-	private static WeightedMultigraph<String, DefaultWeightedEdge> timeRelation =
+	private static final WeightedMultigraph<String, DefaultWeightedEdge> timeRelation =
 		new WeightedMultigraph<>(DefaultWeightedEdge.class);
 
 	private static DijkstraShortestPath dijkstraShortestDistance;
@@ -109,7 +109,7 @@ public class RelationRepository {
 					&& e.getOpponentStationName().equals(relation.getOpponentStationName()))
 			.map(Relation::getTimeWeight)
 			.findAny()
-			.get();
+			.orElseThrow(() -> new RuntimeException("해당 Edge는 존재하지 않습니다"));
 	}
 
 	private static int getDistanceWeightByEdge(DefaultWeightedEdge edge) {
@@ -120,7 +120,7 @@ public class RelationRepository {
 					&& e.getOpponentStationName().equals(relation.getOpponentStationName()))
 			.map(Relation::getDistanceWeight)
 			.findAny()
-			.get();
+			.orElseThrow(() -> new RuntimeException("해당 Edge는 존재하지 않습니다"));
 	}
 
 	private static Relation getStationNamesByEdge(DefaultWeightedEdge edge) {
