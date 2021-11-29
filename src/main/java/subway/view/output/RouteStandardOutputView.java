@@ -21,6 +21,7 @@ public class RouteStandardOutputView {
 	private static final String INFO_TOTAL_DISTANCE = INFO + "총 거리: ";
 	private static final String INFO_TOTAL_TIME = INFO + "총 소요 시간: ";
 	private static Map<Character, Consumer<ViewModel>> views = new HashMap<>();
+	private static final String ERROR_DUPLICATES_STATIONS = "[ERROR] 출발역과 도착역이 동일합니다.";;
 
 	static {
 		views.put(INPUT_SHORTEST_DISTANCE, RouteStandardOutputView::printDistance);
@@ -34,6 +35,7 @@ public class RouteStandardOutputView {
 	private static void printDistance(ViewModel viewModel) {
 		String sourceStation = viewModel.getSourceStation();
 		String destinationStation = viewModel.getDestinationStation();
+		validateStations(sourceStation, destinationStation);
 		Relation relation = RelationRepository.getShortestTime(sourceStation, destinationStation);
 		System.out.println(SEARCH_RESULT);
 		System.out.println(INFO_LINE);
@@ -45,9 +47,16 @@ public class RouteStandardOutputView {
 		System.out.println();
 	}
 
+	private static void validateStations(String sourceStation, String destinationStation) {
+		if (sourceStation.equals(destinationStation)) {
+			throw new IllegalArgumentException(ERROR_DUPLICATES_STATIONS);
+		}
+	}
+
 	private static void printTime(ViewModel viewModel) {
 		String sourceStation = viewModel.getSourceStation();
 		String destinationStation = viewModel.getDestinationStation();
+		validateStations(sourceStation, destinationStation);
 		Relation relation =
 			RelationRepository.getShortestDistance(sourceStation, destinationStation);
 		System.out.println(SEARCH_RESULT);
