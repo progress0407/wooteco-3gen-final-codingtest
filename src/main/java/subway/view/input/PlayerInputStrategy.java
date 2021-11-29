@@ -1,4 +1,4 @@
-package subway.view;
+package subway.view.input;
 
 import java.util.Scanner;
 

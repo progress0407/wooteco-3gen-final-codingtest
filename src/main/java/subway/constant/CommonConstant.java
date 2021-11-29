@@ -1,5 +1,5 @@
 package subway.constant;
 
-public class Constant {
+public class CommonConstant {
 	public static String LINE_SEPERATOR = System.lineSeparator();
 }
