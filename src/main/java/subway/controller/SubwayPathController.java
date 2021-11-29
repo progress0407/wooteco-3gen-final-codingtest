@@ -2,13 +2,15 @@ package subway.controller;
 
 import static subway.constant.ViewConstant.*;
 
+import subway.domain.ViewModel;
 import subway.view.input.MainInputView;
-import subway.view.output.OutputView;
 import subway.view.input.PlayerInputStrategy;
+import subway.view.output.RouteStandardOutputView;
 
 public class SubwayPathController {
 	private static final PlayerInputStrategy playerInputStrategy = new PlayerInputStrategy();
-	private static final MainInputView MAIN_INPUT_VIEW = new MainInputView();
+	private final MainInputView mainInputView = new MainInputView();
+	private final RouteStandardOutputView routeStandardOutput = new RouteStandardOutputView();
 
 	public void run() {
 		boolean isContinuous;
@@ -18,12 +20,11 @@ public class SubwayPathController {
 	}
 
 	private boolean play() {
-		char input = MAIN_INPUT_VIEW.getNumber(playerInputStrategy);
-		if (input == EXIT_SIGNAL) {
+		ViewModel viewModel = mainInputView.getNumber(playerInputStrategy);
+		if (viewModel.getInput() == EXIT_SIGNAL) {
 			return false;
 		}
-		OutputView.printResult(input);
+		routeStandardOutput.printResult(viewModel);
 		return true;
 	}
-
 }
