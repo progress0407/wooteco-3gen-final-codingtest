@@ -3,6 +3,7 @@ package subway.view.output;
 import static subway.constant.CommonConstant.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -15,9 +16,10 @@ public class RouteStandardOutputView {
 	private static final String SEARCH_RESULT = "## 조회 결과";
 	private static final Character INPUT_SHORTEST_DISTANCE = '1';
 	private static final Character INPUT_SHORTEST_TIME = '2';
-	private static final String INFO_LINE = "[INFO] ---";
-	private static final String INFO_TOTAL_DISTANCE = "[INFO] 총 거리: ";
-	private static final String INFO_TOTAL_TIME = "[INFO] 총 소요 시간: ";
+	private static final String INFO = "[INFO] ";
+	private static final String INFO_LINE = INFO + "---";
+	private static final String INFO_TOTAL_DISTANCE = INFO + "총 거리: ";
+	private static final String INFO_TOTAL_TIME = INFO + "총 소요 시간: ";
 	private static Map<Character, Consumer<ViewModel>> views = new HashMap<>();
 
 	static {
@@ -30,22 +32,31 @@ public class RouteStandardOutputView {
 	}
 
 	private static void printDistance(ViewModel viewModel) {
-		Relation relation =
-			RelationRepository.getShortestTime(viewModel.getSourceStation(), viewModel.getDestinationStation());
+		String sourceStation = viewModel.getSourceStation();
+		String destinationStation = viewModel.getDestinationStation();
+		Relation relation = RelationRepository.getShortestTime(sourceStation, destinationStation);
 		System.out.println(SEARCH_RESULT);
 		System.out.println(INFO_LINE);
 		System.out.println(INFO_TOTAL_DISTANCE + relation.getDistanceWeight());
 		System.out.println(INFO_TOTAL_TIME + relation.getTimeWeight());
-		System.out.println(INFO_LINE + LINE_SEPARATOR);
+		System.out.println(INFO_LINE);
+		List<String> stations = RelationRepository.getStationsByDistance(sourceStation, destinationStation);
+		stations.forEach(station -> System.out.println(INFO + station));
+		System.out.println();
 	}
 
 	private static void printTime(ViewModel viewModel) {
+		String sourceStation = viewModel.getSourceStation();
+		String destinationStation = viewModel.getDestinationStation();
 		Relation relation =
-			RelationRepository.getShortestDistance(viewModel.getSourceStation(), viewModel.getDestinationStation());
+			RelationRepository.getShortestDistance(sourceStation, destinationStation);
 		System.out.println(SEARCH_RESULT);
 		System.out.println(INFO_LINE);
 		System.out.println(INFO_TOTAL_DISTANCE + relation.getDistanceWeight());
 		System.out.println(INFO_TOTAL_TIME + relation.getTimeWeight());
-		System.out.println(INFO_LINE + LINE_SEPARATOR);
+		System.out.println(INFO_LINE);
+		List<String> stations = RelationRepository.getStationsByTime(sourceStation, destinationStation);
+		stations.forEach(station -> System.out.println(INFO + station));
+		System.out.println();
 	}
 }

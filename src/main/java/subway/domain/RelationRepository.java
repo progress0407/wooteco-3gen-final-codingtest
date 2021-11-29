@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -86,6 +87,16 @@ public class RelationRepository {
 			timeTotal += timeWeight;
 		}
 		return new Relation(distanceShortest, timeTotal);
+	}
+
+	public static List<String> getStationsByDistance(String source, String destination) {
+		GraphPath graphPath = dijkstraShortestDistance.getPath(source, destination);
+		return graphPath.getVertexList();
+	}
+
+	public static List<String> getStationsByTime(String source, String destination) {
+		GraphPath graphPath = dijkstraShortestTime.getPath(source, destination);
+		return graphPath.getVertexList();
 	}
 
 	public static Relation getShortestTime(String source, String destination) {
